@@ -86,7 +86,7 @@ public class RetrofitCreateHelper {
                 .hostnameVerifier(new HostnameVerifier() {
                     @Override
                     public boolean verify(String hostname, SSLSession session) {
-                        return false;
+                        return true;
                     }
                 })
                 .addInterceptor(interceptor)//打印日志

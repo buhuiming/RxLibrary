@@ -36,5 +36,6 @@ dependencies {
     compile 'com.bhm.sdk.bhmlibrary:BHMLibrary:1.2.3'
     //permissions
     compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
-    compile 'com.bhm.sdk.rxlibrary:RxLibrary:2.5.2'
+//    compile 'com.bhm.sdk.rxlibrary:RxLibrary:2.5.2'
+    compile project(path: ':RxJava')
 }

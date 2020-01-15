@@ -1,7 +1,11 @@
 package com.bhm.sdk.rxlibrary.rxbus;
 
+import android.os.Build;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import androidx.annotation.RequiresApi;
 
 /**
  *
@@ -30,9 +34,9 @@ public class SubscriberMethod {
     public void invoke(Object o){
         try {
             Class[] parameterType = method.getParameterTypes();
-            if(parameterType != null && parameterType.length == 1){
+            if(parameterType.length == 1){
                 method.invoke(subscriber, o);
-            }else if(parameterType == null || parameterType.length == 0){
+            }else if(parameterType.length == 0){
                 method.invoke(subscriber);
             }
         } catch (IllegalAccessException | InvocationTargetException e) {

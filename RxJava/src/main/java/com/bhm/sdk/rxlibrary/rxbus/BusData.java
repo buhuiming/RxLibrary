@@ -6,8 +6,8 @@ package com.bhm.sdk.rxlibrary.rxbus;
  */
 public class BusData {
 
-    String id;
-    String status;
+    private String id;
+    private String status;
 
     public BusData() {
 

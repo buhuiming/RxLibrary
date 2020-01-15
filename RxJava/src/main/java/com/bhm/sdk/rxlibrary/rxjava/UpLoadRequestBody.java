@@ -1,7 +1,7 @@
 package com.bhm.sdk.rxlibrary.rxjava;
 
 import android.annotation.SuppressLint;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.bhm.sdk.rxlibrary.rxjava.callback.RxUpLoadCallBack;
 import com.bhm.sdk.rxlibrary.utils.RxUtils;

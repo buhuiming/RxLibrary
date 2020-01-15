@@ -1,13 +1,13 @@
 package com.bhm.sdk.rxlibrary.rxjava;
 
 import com.bhm.sdk.rxlibrary.utils.RxLoadingDialog;
-import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
 
 /**
  * Created by bhm on 2018/5/11.
  */
 
-public class RxBaseActivity extends RxAppCompatActivity{
+public class RxBaseActivity extends RxAppCompatActivity {
 
     protected RxManager rxManager = new RxManager();
 

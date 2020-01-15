@@ -8,7 +8,7 @@ import com.bhm.sdk.rxlibrary.rxjava.callback.RxStreamCallBackImp;
 import com.bhm.sdk.rxlibrary.utils.RxLoadingDialog;
 import com.bhm.sdk.rxlibrary.utils.RxUtils;
 import com.google.gson.JsonSyntaxException;
-import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
 
 import java.io.InputStream;
 import java.util.concurrent.TimeoutException;
@@ -230,7 +230,7 @@ public class RxBuilder {
         };
     }
 
-    public Disposable beginDownLoad(@android.support.annotation.NonNull Observable<ResponseBody> observable){
+    public Disposable beginDownLoad(@androidx.annotation.NonNull Observable<ResponseBody> observable){
         return observable.subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .map(new Function<ResponseBody, InputStream>() {

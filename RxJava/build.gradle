@@ -2,18 +2,18 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "26.0.2"
+    compileSdkVersion 29
+    buildToolsVersion "28.0.3"
 
     lintOptions {
         abortOnError false
     }
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 25
-        versionCode 253
-        versionName "2.5.3"
+        minSdkVersion 19
+        targetSdkVersion 29
+        versionCode 260
+        versionName "2.6.0"
     }
     buildTypes {
         release {
@@ -21,24 +21,28 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
     // Retrofit
-    compile 'com.squareup.retrofit2:retrofit:2.3.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.9.1'
-    compile 'com.squareup.okhttp3:okhttp:3.9.1'
+    api 'com.squareup.retrofit2:retrofit:2.7.1'
+    api 'com.squareup.retrofit2:converter-gson:2.7.1'
+    api 'com.squareup.retrofit2:adapter-rxjava2:2.7.1'
+    api 'com.squareup.okhttp3:logging-interceptor:3.9.1'
+    api 'com.squareup.okhttp3:okhttp:4.3.1'
     // RxJava
-    compile 'io.reactivex.rxjava2:rxjava:2.1.8'
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
-    compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.1.0'
+    api 'io.reactivex.rxjava3:rxjava:3.0.0-RC7'
+    api 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    api 'com.jakewharton.rxbinding3:rxbinding:3.1.0'
+    api 'com.trello.rxlifecycle3:rxlifecycle-components:3.1.0'
 }
 ext {
     PUBLISH_GROUP_ID = 'com.bhm.sdk.rxlibrary'
     PUBLISH_ARTIFACT_ID = 'RxLibrary'
-    PUBLISH_VERSION = '2.5.3'
+    PUBLISH_VERSION = '2.6.0'
 }
 apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'

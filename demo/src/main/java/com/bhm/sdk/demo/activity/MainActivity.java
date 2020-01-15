@@ -7,9 +7,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -123,6 +123,9 @@ public class MainActivity extends RxBaseActivity {
                 downLoad();
                 break;
             case 5:
+                if(!rxManager.isExitObserver(down_Disposable)){
+                    return;
+                }
                 rxManager.removeObserver(down_Disposable);
                 break;
             case 6:

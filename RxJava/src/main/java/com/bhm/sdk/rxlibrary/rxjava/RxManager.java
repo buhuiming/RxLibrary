@@ -22,12 +22,13 @@ public class RxManager {
     private List<Disposable> list = new ArrayList<>();
 
     public void subscribe(Disposable d) {
-        mCompositeDisposable.add(d);//注册订阅
         if(null == list){
             list = new ArrayList<>();
         }
-        if(!list.contains(d))
+        if(!list.contains(d)) {
             list.add(d);
+            mCompositeDisposable.add(d);//注册订阅
+        }
     }
 
     /**
@@ -42,8 +43,10 @@ public class RxManager {
      * 取消一个请求
      */
     public void removeObserver(){//中断监听 取消请求
-        if(null != list && list.size() > 0)
-            mCompositeDisposable.remove(list.get(list.size()-1));
+        if(null != list && list.size() > 0) {
+            mCompositeDisposable.remove(list.get(list.size() - 1));
+            list.remove(list.get(list.size()-1));
+        }
     }
 
     /**
@@ -52,7 +55,21 @@ public class RxManager {
     public void removeObserver(Disposable disposable){//中断监听 取消请求
         if(null != disposable) {
             mCompositeDisposable.remove(disposable);
+            if(list != null){
+                list.remove(disposable);
+            }
         }
+    }
+
+    public boolean isExitObserver(){
+        if(null != list && list.size() > 0) {
+            return isExitObserver(list.get(list.size()-1));
+        }
+        return false;
+    }
+
+    public boolean isExitObserver(Disposable disposable){
+        return null != list && list.contains(disposable);
     }
 
     /**

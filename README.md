@@ -9,6 +9,8 @@ RxLibrary工程：<br>1.rxjava2 + retrofit2的封装，常用的请求（Get,Pos
 
 <br>
 
+#### v2.6.0为androidx版本，如果不用androidx就使用v2.5.3，但是后续有更新将只支持androidx的版本
+
 集成
 -------
     maven { url "https://dl.bintray.com/bikie/bhm-sdk" } //根目录下build.gradle的allprojects-repositories节点下添加

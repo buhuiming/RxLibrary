@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.bhm.sdk.rxlibrary.rxjava.callback.CallBack;
 import com.bhm.sdk.rxlibrary.rxjava.callback.RxStreamCallBackImp;
+import com.bhm.sdk.rxlibrary.utils.ResultException;
 import com.bhm.sdk.rxlibrary.utils.RxLoadingDialog;
 import com.bhm.sdk.rxlibrary.utils.RxUtils;
 import com.google.gson.JsonSyntaxException;
@@ -183,7 +184,8 @@ public class RxBuilder {
                     } else if (e instanceof IndexOutOfBoundsException
                             || e instanceof NullPointerException
                             || e instanceof JsonSyntaxException
-                            || e instanceof IllegalStateException) {
+                            || e instanceof IllegalStateException
+                            || e instanceof ResultException) {
                         Toast.makeText(getActivity(), "数据异常，解析失败！", Toast.LENGTH_SHORT).show();
                     } else if (e instanceof TimeoutException) {
                         Toast.makeText(getActivity(), "连接超时，请重试！", Toast.LENGTH_SHORT).show();

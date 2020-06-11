@@ -32,7 +32,7 @@
             android:layout_toRightOf="@id/pb_loading"
             android:layout_marginLeft="15dp"
             android:layout_centerVertical="true"
-            android:text="正在请求..."
+            android:text="@string/string_loading"
             android:textColor="@color/white"
             android:textSize="16sp" />
     </RelativeLayout>

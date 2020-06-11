@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/RxJava/RxJava.iml" filepath="$PROJECT_DIR$/RxJava/RxJava.iml" group="RxLibrary/RxJava" />
       <module fileurl="file://$PROJECT_DIR$/RxLibrary.iml" filepath="$PROJECT_DIR$/RxLibrary.iml" group="RxLibrary" />
+      <module fileurl="file://$PROJECT_DIR$/RxJava/RxLibrary-RxJava.iml" filepath="$PROJECT_DIR$/RxJava/RxLibrary-RxJava.iml" group="RxLibrary/RxJava" />
+      <module fileurl="file://$PROJECT_DIR$/demo/RxLibrary-demo.iml" filepath="$PROJECT_DIR$/demo/RxLibrary-demo.iml" group="RxLibrary/demo" />
       <module fileurl="file://$PROJECT_DIR$/demo/demo.iml" filepath="$PROJECT_DIR$/demo/demo.iml" group="RxLibrary/demo" />
     </modules>
   </component>

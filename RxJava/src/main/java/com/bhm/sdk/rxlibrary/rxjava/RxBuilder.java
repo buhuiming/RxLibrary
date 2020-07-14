@@ -1,6 +1,5 @@
 package com.bhm.sdk.rxlibrary.rxjava;
 
-import android.app.Activity;
 import android.widget.Toast;
 
 import com.bhm.sdk.rxlibrary.rxjava.callback.CallBack;
@@ -60,10 +59,6 @@ public class RxBuilder {
         return builder.isLogOutPut;
     }
 
-    public boolean isCanceledOnTouchOutside() {
-        return builder.isCanceledOnTouchOutside;
-    }
-
     public RxLoadingDialog getDialog() {
         return builder.dialog;
     }
@@ -110,6 +105,10 @@ public class RxBuilder {
 
     public String getLoadingTitle(){
         return builder.loadingTitle;
+    }
+
+    public boolean isDialogDismissInterruptRequest(){
+        return builder.dialogDismissInterruptRequest;
     }
 
     public <T> T createApi(Class<T> cla, String host){
@@ -277,7 +276,6 @@ public class RxBuilder {
         private RxManager rxManager;
         private boolean isShowDialog = RxConfig.isShowDialog();
         private boolean cancelable = RxConfig.cancelable();
-        private boolean isCanceledOnTouchOutside = RxConfig.isCanceledOnTouchOutside();
         private RxLoadingDialog dialog = RxConfig.getRxLoadingDialog();
         private boolean isDefaultToast = RxConfig.isDefaultToast();
         private int readTimeOut = RxConfig.getReadTimeOut();
@@ -289,6 +287,7 @@ public class RxBuilder {
         private long writtenLength = RxConfig.writtenLength();
         private boolean appendWrite = RxConfig.isAppendWrite();
         private String loadingTitle = RxConfig.getLoadingTitle();
+        private boolean dialogDismissInterruptRequest = RxConfig.isDialogDismissInterruptRequest();
 
         public Builder(RxAppCompatActivity activity) {
             this.activity = activity;
@@ -299,10 +298,10 @@ public class RxBuilder {
             return this;
         }
 
-        public Builder setDialogAttribute(boolean isShowDialog, boolean cancelable, boolean isCanceledOnTouchOutside){
+        public Builder setDialogAttribute(boolean isShowDialog, boolean cancelable, boolean dialogDismissInterruptRequest){
             this.isShowDialog = isShowDialog;
             this.cancelable = cancelable;
-            this.isCanceledOnTouchOutside = isCanceledOnTouchOutside;
+            this.dialogDismissInterruptRequest = dialogDismissInterruptRequest;
             return this;
         }
 

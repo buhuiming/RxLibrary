@@ -12,7 +12,6 @@ public class MyLoadingDialog extends RxLoadingDialog{
 
     @Override
     public RxLoadingFragment initDialog(RxBuilder builder) {
-
-        return new MyRxLoadingFragment();
+        return new MyRxLoadingFragment(builder);
     }
 }

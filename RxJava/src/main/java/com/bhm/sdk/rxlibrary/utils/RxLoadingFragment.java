@@ -2,47 +2,82 @@ package com.bhm.sdk.rxlibrary.utils;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bhm.sdk.rxlibrary.R;
+import com.bhm.sdk.rxlibrary.rxjava.RxBuilder;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 public class RxLoadingFragment extends DialogFragment {
 
-    @NonNull
+    private RxBuilder builder;
+    private static long onBackPressed = 0L;
+
+    public RxLoadingFragment(RxBuilder builder){
+        this.builder = builder;
+    }
+
+    @NotNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        String title = null;
-        boolean isCancelable = true;
-        boolean isCanceledOnTouchOutside = true;
-        if(getArguments() != null){
-            title = getArguments().getString("title");
-            isCancelable = getArguments().getBoolean("isCancelable");
-            isCanceledOnTouchOutside = getArguments().getBoolean("isCanceledOnTouchOutside");
+        Dialog dialog = initDialog();
+        if(dialog != null && getActivity() != null) {
+            dialog.setOwnerActivity(getActivity());
+            dialog.setCanceledOnTouchOutside(false);//这个值最好设置成false，点击其他区域关闭loading，体验效果不佳
+            dialog.setCancelable(builder.isCancelable());
+            dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                @Override
+                public boolean onKey(DialogInterface dialogInterface, int i, KeyEvent keyEvent) {
+                    if (i == KeyEvent.KEYCODE_BACK && dialog.isShowing()
+                            && keyEvent.getAction() == KeyEvent.ACTION_UP) {
+                        if(builder.isCancelable()){
+                            if(builder.isDialogDismissInterruptRequest() && null != builder.getRxManager()){
+                                builder.getRxManager().removeObserver();
+                            }
+                            dismiss();
+                            return true;
+                        }
+                        if ((System.currentTimeMillis() - onBackPressed) > 1000) {
+                            onBackPressed = System.currentTimeMillis();
+                        }else{
+                            if(null != builder.getRxManager()) {
+                                builder.getRxManager().removeObserver();
+                            }
+                            dismiss();
+                        }
+                    }
+                    return true;
+                }
+            });
         }
+        return Objects.requireNonNull(dialog);
+    }
+
+    public Dialog initDialog(){
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         @SuppressLint("InflateParams")
         View v = inflater.inflate(R.layout.layout_dialog_app_loading, null);// 得到加载view
         @SuppressWarnings("ConstantConditions")
         Dialog dialog = new Dialog(getActivity(), R.style.loading_dialog);// 创建自定义样式dialog
-        dialog.setCancelable(isCancelable);// false不可以用“返回键”取消
-        dialog.setCanceledOnTouchOutside(isCanceledOnTouchOutside);
         dialog.setContentView(v, new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));// 设置布局
-        if(!TextUtils.isEmpty(title)){
+        if(!TextUtils.isEmpty(builder.getLoadingTitle())){
             TextView textView = v.findViewById(R.id.dialog_text_loading);
-            textView.setText(title);
+            textView.setText(builder.getLoadingTitle());
         }
         return dialog;
     }

@@ -13,7 +13,6 @@ public class RxConfig {
     private static RxLoadingDialog dialog;
     private static boolean isShowDialog;
     private static boolean cancelable;
-    private static boolean isCanceledOnTouchOutside;
     private static boolean isDefaultToast;
     private static int readTimeOut;
     private static int connectTimeOut;
@@ -24,12 +23,12 @@ public class RxConfig {
     private static long writtenLength;
     private static boolean isAppendWrite;
     private static String loadingTitle = "正在请求...";
+    private static boolean dialogDismissInterruptRequest = true;
 
     public RxConfig(Builder builder){
         dialog = builder.dialog;
         isShowDialog = builder.isShowDialog;
         cancelable = builder.cancelable;
-        isCanceledOnTouchOutside = builder.isCanceledOnTouchOutside;
         isDefaultToast = builder.isDefaultToast;
         readTimeOut = builder.readTimeOut;
         connectTimeOut = builder.connectTimeOut;
@@ -146,10 +145,6 @@ public class RxConfig {
         return cancelable;
     }
 
-    public static boolean isCanceledOnTouchOutside(){
-        return isCanceledOnTouchOutside;
-    }
-
     public static boolean isDefaultToast(){
         return isDefaultToast;
     }
@@ -176,5 +171,8 @@ public class RxConfig {
 
     public static String getLoadingTitle(){
         return loadingTitle;
+    }
+    public static boolean isDialogDismissInterruptRequest(){
+        return dialogDismissInterruptRequest;
     }
 }

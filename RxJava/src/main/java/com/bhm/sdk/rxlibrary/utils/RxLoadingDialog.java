@@ -1,9 +1,6 @@
 package com.bhm.sdk.rxlibrary.utils;
 
 import android.app.Activity;
-import android.content.DialogInterface;
-import android.os.Bundle;
-import android.view.KeyEvent;
 
 import com.bhm.sdk.rxlibrary.rxjava.RxBuilder;
 
@@ -14,7 +11,6 @@ import com.bhm.sdk.rxlibrary.rxjava.RxBuilder;
 public class RxLoadingDialog {
 
     private RxLoadingFragment rxLoadingFragment;
-    private static long onBackPressed = 0L;
     private static RxLoadingDialog RxDialog;
 
     public static RxLoadingDialog getDefaultDialog(){
@@ -29,49 +25,16 @@ public class RxLoadingDialog {
      * isCancelable true,单击返回键，dialog关闭；false,1s内双击返回键，dialog关闭，否则dialog不关闭
      */
     public void showLoading(final RxBuilder builder){
-        if (rxLoadingFragment == null) {
-            if (builder.getActivity() != null && !builder.getActivity().isFinishing()) {
+        if (builder.getActivity() != null && !builder.getActivity().isFinishing() && builder.isShowDialog()) {
+            if (rxLoadingFragment == null) {
                 rxLoadingFragment = initDialog(builder);
-                if(rxLoadingFragment.getDialog() != null) {
-                    rxLoadingFragment.getDialog().setOwnerActivity(builder.getActivity());
-                    rxLoadingFragment.getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
-                        @Override
-                        public boolean onKey(DialogInterface dialogInterface, int i, KeyEvent keyEvent) {
-                            if (i == KeyEvent.KEYCODE_BACK && rxLoadingFragment.getDialog().isShowing()
-                                    && keyEvent.getAction() == KeyEvent.ACTION_UP) {
-                                if(builder.isCancelable()){
-                                    if(null != builder.getRxManager()) {
-                                        builder.getRxManager().removeObserver();
-                                    }
-                                    dismissLoading(builder.getActivity());
-                                    return false;
-                                }
-                                if ((System.currentTimeMillis() - onBackPressed) > 1000) {
-                                    onBackPressed = System.currentTimeMillis();
-                                }else{
-                                    if(null != builder.getRxManager()) {
-                                        builder.getRxManager().removeObserver();
-                                    }
-                                    dismissLoading(builder.getActivity());
-                                }
-                            }
-                            return false;
-                        }
-                    });
-                }
             }
+            rxLoadingFragment.show(builder.getActivity().getSupportFragmentManager(), "default");
         }
-        rxLoadingFragment.show(builder.getActivity().getSupportFragmentManager(), "default");
     }
 
     public RxLoadingFragment initDialog(RxBuilder builder){
-        RxLoadingFragment fragment = new RxLoadingFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("title", builder.getLoadingTitle());
-        bundle.putBoolean("isCancelable", builder.isCancelable());
-        bundle.putBoolean("isCanceledOnTouchOutside", builder.isCanceledOnTouchOutside());
-        fragment.setArguments(bundle);
-        return fragment;
+        return new RxLoadingFragment(builder);
     }
 
     public void dismissLoading(Activity activity){

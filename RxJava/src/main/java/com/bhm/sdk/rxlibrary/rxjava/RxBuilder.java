@@ -40,7 +40,7 @@ public class RxBuilder {
         this.builder = builder;
     }
 
-    public Activity getActivity() {
+    public RxAppCompatActivity getActivity() {
         return builder.activity;
     }
 
@@ -106,6 +106,10 @@ public class RxBuilder {
 
     public boolean isAppendWrite(){
         return builder.appendWrite;
+    }
+
+    public String getLoadingTitle(){
+        return builder.loadingTitle;
     }
 
     public <T> T createApi(Class<T> cla, String host){
@@ -284,6 +288,7 @@ public class RxBuilder {
         private String fileName = RxConfig.getFileName();
         private long writtenLength = RxConfig.writtenLength();
         private boolean appendWrite = RxConfig.isAppendWrite();
+        private String loadingTitle = RxConfig.getLoadingTitle();
 
         public Builder(RxAppCompatActivity activity) {
             this.activity = activity;
@@ -329,6 +334,11 @@ public class RxBuilder {
 
         public Builder setIsLogOutPut(boolean isLogOutPut){
             this.isLogOutPut = isLogOutPut;
+            return this;
+        }
+
+        public Builder setLoadingTitle(String loadingTitle){
+            this.loadingTitle = loadingTitle;
             return this;
         }
 

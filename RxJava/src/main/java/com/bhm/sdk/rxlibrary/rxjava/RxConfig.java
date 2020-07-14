@@ -23,6 +23,7 @@ public class RxConfig {
     private static String fileName;
     private static long writtenLength;
     private static boolean isAppendWrite;
+    private static String loadingTitle = "正在请求...";
 
     public RxConfig(Builder builder){
         dialog = builder.dialog;
@@ -38,6 +39,7 @@ public class RxConfig {
         fileName = builder.fileName;
         writtenLength = builder.writtenLength;
         isAppendWrite = builder.isAppendWrite;
+        loadingTitle = builder.loadingTitle;
     }
 
     public static RxConfig.Builder newBuilder() {
@@ -58,6 +60,7 @@ public class RxConfig {
         private String fileName;
         private long writtenLength;
         private boolean isAppendWrite;
+        private String loadingTitle;
 
         public Builder setRxLoadingDialog(RxLoadingDialog setDialog){
             dialog = setDialog;
@@ -93,6 +96,11 @@ public class RxConfig {
 
         public Builder isDefaultToast(boolean defaultToast){
             isDefaultToast = defaultToast;
+            return this;
+        }
+
+        public Builder setLoadingTitle(String loadingTitle){
+            this.loadingTitle = loadingTitle;
             return this;
         }
 
@@ -164,5 +172,9 @@ public class RxConfig {
 
     public static boolean isAppendWrite(){
         return isAppendWrite;
+    }
+
+    public static String getLoadingTitle(){
+        return loadingTitle;
     }
 }

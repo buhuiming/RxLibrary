@@ -12,8 +12,8 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 263
-        versionName "2.6.3"
+        versionCode 272
+        versionName "2.7.2"
     }
     buildTypes {
         release {
@@ -43,6 +43,6 @@ dependencies {
 ext {
     PUBLISH_GROUP_ID = 'com.bhm.sdk.rxlibrary'
     PUBLISH_ARTIFACT_ID = 'RxLibrary'
-    PUBLISH_VERSION = '2.6.3'
+    PUBLISH_VERSION = '2.7.2'
 }
 apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'

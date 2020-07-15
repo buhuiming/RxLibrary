@@ -41,6 +41,7 @@ public class RxLoadingDialog {
         if(null != activity && !activity.isFinishing()
                 && null != rxLoadingFragment) {
             rxLoadingFragment.dismiss();
+            rxLoadingFragment = null;
         }
     }
 
@@ -48,6 +49,7 @@ public class RxLoadingDialog {
         if(null != activity && null != rxLoadingFragment && null != rxLoadingFragment.getDialog()
                 && activity.equals(rxLoadingFragment.getDialog().getOwnerActivity())) {
             rxLoadingFragment.dismiss();
+            rxLoadingFragment = null;
         }
     }
 }

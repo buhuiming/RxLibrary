@@ -39,6 +39,7 @@ public class RxConfig {
         writtenLength = builder.writtenLength;
         isAppendWrite = builder.isAppendWrite;
         loadingTitle = builder.loadingTitle;
+        dialogDismissInterruptRequest = builder.dialogDismissInterruptRequest;
     }
 
     public static RxConfig.Builder newBuilder() {
@@ -49,7 +50,7 @@ public class RxConfig {
         private RxLoadingDialog dialog;
         private boolean isShowDialog;
         private boolean cancelable;
-        private boolean isCanceledOnTouchOutside;
+        private boolean dialogDismissInterruptRequest;
         private boolean isDefaultToast;
         private int readTimeOut;
         private int connectTimeOut;
@@ -86,10 +87,10 @@ public class RxConfig {
             return this;
         }
 
-        public Builder setDialogAttribute(boolean isShowDialog, boolean cancelable, boolean isCanceledOnTouchOutside){
+        public Builder setDialogAttribute(boolean isShowDialog, boolean cancelable, boolean dialogDismissInterruptRequest){
             this.isShowDialog = isShowDialog;
             this.cancelable = cancelable;
-            this.isCanceledOnTouchOutside = isCanceledOnTouchOutside;
+            this.dialogDismissInterruptRequest = dialogDismissInterruptRequest;
             return this;
         }
 

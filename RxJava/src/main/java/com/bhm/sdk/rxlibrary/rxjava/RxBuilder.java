@@ -11,6 +11,7 @@ import com.google.gson.JsonSyntaxException;
 import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.concurrent.TimeoutException;
 
 import io.reactivex.Observable;
@@ -109,6 +110,10 @@ public class RxBuilder {
 
     public boolean isDialogDismissInterruptRequest(){
         return builder.dialogDismissInterruptRequest;
+    }
+
+    public HashMap<String, String> getDefaultHeader(){
+        return builder.defaultHeader;
     }
 
     public <T> T createApi(Class<T> cla, String host){
@@ -288,6 +293,7 @@ public class RxBuilder {
         private boolean appendWrite = RxConfig.isAppendWrite();
         private String loadingTitle = RxConfig.getLoadingTitle();
         private boolean dialogDismissInterruptRequest = RxConfig.isDialogDismissInterruptRequest();
+        private HashMap<String, String> defaultHeader = RxConfig.getDefaultHeader();
 
         public Builder(RxAppCompatActivity activity) {
             this.activity = activity;
@@ -338,6 +344,11 @@ public class RxBuilder {
 
         public Builder setLoadingTitle(String loadingTitle){
             this.loadingTitle = loadingTitle;
+            return this;
+        }
+
+        public Builder setDefaultHeader(HashMap<String, String> defaultHeader){
+            defaultHeader = defaultHeader;
             return this;
         }
 

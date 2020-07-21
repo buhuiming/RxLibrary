@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.net.URLDecoder;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,7 +34,6 @@ import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.bhm.sdk.rxlibrary.rxjava.HttpCache.getUserAgent;
 
@@ -89,10 +89,11 @@ public class RetrofitCreateHelper {
                         return true;
                     }
                 })
-                .addInterceptor(interceptor)//打印日志
                 .addInterceptor(cacheInterceptor)
+                .addInterceptor(headerInterceptor)
                 .addInterceptor(downInterceptor)
                 .addInterceptor(upInterceptor)
+                .addInterceptor(interceptor)//打印日志
                 .addNetworkInterceptor(cacheInterceptor)//设置Cache拦截器
                 .cache(HttpCache.getCache(builder.getActivity()))
                 .connectTimeout(TIMEOUT_CONNECTION, TimeUnit.SECONDS)//time out
@@ -209,6 +210,25 @@ public class RetrofitCreateHelper {
                         .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
                         .build();
             }
+        }
+    };
+
+    /**
+     *
+     */
+    private Interceptor headerInterceptor = new Interceptor() {
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Request.Builder requestBuilder = chain.request()
+                    .newBuilder();
+            if(builder.getDefaultHeader() != null && !builder.getDefaultHeader().isEmpty()){
+                for (Map.Entry<String, String> stringStringEntry : builder.getDefaultHeader().entrySet()) {
+                    String key = ((Map.Entry) stringStringEntry).getKey().toString();
+                    String value = ((Map.Entry) stringStringEntry).getValue().toString();
+                    requestBuilder.addHeader(key, value);
+                }
+            }
+            return chain.proceed(requestBuilder.build());
         }
     };
 

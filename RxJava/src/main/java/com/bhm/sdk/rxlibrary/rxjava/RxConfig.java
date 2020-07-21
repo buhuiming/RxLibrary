@@ -2,6 +2,8 @@ package com.bhm.sdk.rxlibrary.rxjava;
 
 import com.bhm.sdk.rxlibrary.utils.RxLoadingDialog;
 
+import java.util.HashMap;
+
 import okhttp3.OkHttpClient;
 
 /**
@@ -24,6 +26,7 @@ public class RxConfig {
     private static boolean isAppendWrite;
     private static String loadingTitle = "正在请求...";
     private static boolean dialogDismissInterruptRequest = true;
+    private static HashMap<String, String> defaultHeader = new HashMap<>();
 
     public RxConfig(Builder builder){
         dialog = builder.dialog;
@@ -40,6 +43,7 @@ public class RxConfig {
         isAppendWrite = builder.isAppendWrite;
         loadingTitle = builder.loadingTitle;
         dialogDismissInterruptRequest = builder.dialogDismissInterruptRequest;
+        defaultHeader = builder.defaultHeader;
     }
 
     public static RxConfig.Builder newBuilder() {
@@ -61,6 +65,7 @@ public class RxConfig {
         private long writtenLength;
         private boolean isAppendWrite;
         private String loadingTitle;
+        private HashMap<String, String> defaultHeader;
 
         public Builder setRxLoadingDialog(RxLoadingDialog setDialog){
             dialog = setDialog;
@@ -84,6 +89,11 @@ public class RxConfig {
 
         public Builder setReadTimeOut(int setReadTimeOut){
             readTimeOut = setReadTimeOut;
+            return this;
+        }
+
+        public Builder setDefaultHeader(HashMap<String, String> defaultHeader){
+            defaultHeader = defaultHeader;
             return this;
         }
 
@@ -173,7 +183,12 @@ public class RxConfig {
     public static String getLoadingTitle(){
         return loadingTitle;
     }
+
     public static boolean isDialogDismissInterruptRequest(){
         return dialogDismissInterruptRequest;
+    }
+
+    public static HashMap<String, String> getDefaultHeader(){
+        return defaultHeader;
     }
 }

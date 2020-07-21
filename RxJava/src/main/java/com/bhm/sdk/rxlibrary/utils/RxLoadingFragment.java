@@ -20,6 +20,7 @@ import java.util.Objects;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 
 public class RxLoadingFragment extends DialogFragment {
 
@@ -28,6 +29,18 @@ public class RxLoadingFragment extends DialogFragment {
 
     public RxLoadingFragment(RxBuilder builder){
         this.builder = builder;
+    }
+
+    @Override
+    public void show(@NotNull FragmentManager manager, String tag) {
+        try {
+            //在每个add事务前增加一个remove事务，防止连续的add
+            manager.beginTransaction().remove(this).commit();
+            super.show(manager, tag);
+        } catch (Exception e) {
+            //同一实例使用不同的tag会异常,这里捕获一下
+            e.printStackTrace();
+        }
     }
 
     @NotNull

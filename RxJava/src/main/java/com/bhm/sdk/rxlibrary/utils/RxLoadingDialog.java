@@ -4,6 +4,8 @@ import android.app.Activity;
 
 import com.bhm.sdk.rxlibrary.rxjava.RxBuilder;
 
+import androidx.fragment.app.FragmentManager;
+
 /**
  * Created by bhm on 2018/5/11.
  */
@@ -29,7 +31,10 @@ public class RxLoadingDialog {
             if (rxLoadingFragment == null) {
                 rxLoadingFragment = initDialog(builder);
             }
-            rxLoadingFragment.show(builder.getActivity().getSupportFragmentManager(), "default");
+            FragmentManager fm = builder.getActivity().getSupportFragmentManager();
+            if (!rxLoadingFragment.isAdded() && null == fm.findFragmentByTag("default")) {
+                rxLoadingFragment.show(fm, "default");
+            }
         }
     }
 

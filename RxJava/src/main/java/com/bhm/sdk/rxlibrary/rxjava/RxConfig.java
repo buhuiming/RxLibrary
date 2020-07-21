@@ -93,7 +93,7 @@ public class RxConfig {
         }
 
         public Builder setDefaultHeader(HashMap<String, String> defaultHeader){
-            defaultHeader = defaultHeader;
+            this.defaultHeader = defaultHeader;
             return this;
         }
 

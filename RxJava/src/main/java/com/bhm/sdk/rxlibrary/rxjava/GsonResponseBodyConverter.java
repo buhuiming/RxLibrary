@@ -2,16 +2,11 @@ package com.bhm.sdk.rxlibrary.rxjava;
 
 import com.bhm.sdk.rxlibrary.utils.ResultException;
 import com.google.gson.Gson;
-import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.lang.reflect.Type;
 
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
-import okio.Buffer;
 import retrofit2.Converter;
 
 public class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
@@ -28,7 +23,10 @@ public class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> 
         String response = value.string();
         //先将返回的json数据解析到Response中，如果code==200，则解析到我们的实体基类中，否则抛异常
         DataResponse httpResult = gson.fromJson(response, DataResponse.class);
-        if (httpResult.getCode() == 200 || httpResult.getRet() == 200){
+        if(httpResult == null){
+            //这种情况是请求成功，但是json不是合理的
+            throw new ResultException(200, "json is illegal", response);
+        }else if (httpResult.getCode() == 200 || httpResult.getRet() == 200){
             //200的时候就直接解析，不可能出现解析异常。因为我们实体基类中传入的泛型，就是数据成功时候的格式
             return gson.fromJson(response, type);
         }else if(httpResult.getCode() == 0 && httpResult.getRet() == 0){

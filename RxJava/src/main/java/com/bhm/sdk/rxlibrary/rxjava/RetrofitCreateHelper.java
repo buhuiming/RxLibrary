@@ -89,11 +89,11 @@ public class RetrofitCreateHelper {
                         return true;
                     }
                 })
+                .addInterceptor(interceptor)//打印日志
                 .addInterceptor(cacheInterceptor)
                 .addInterceptor(headerInterceptor)
                 .addInterceptor(downInterceptor)
                 .addInterceptor(upInterceptor)
-                .addInterceptor(interceptor)//打印日志
                 .addNetworkInterceptor(cacheInterceptor)//设置Cache拦截器
                 .cache(HttpCache.getCache(builder.getActivity()))
                 .connectTimeout(TIMEOUT_CONNECTION, TimeUnit.SECONDS)//time out

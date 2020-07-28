@@ -41,5 +41,5 @@ dependencies {
     //permissions
     implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
     implementation project(path: ':RxJava')
-//    implementation 'com.bhm.sdk.rxlibrary:RxLibrary:2.7.2'
+    implementation 'com.bhm.sdk.bhmlibrary:ActivityResult:1.0.4'
 }

@@ -7,9 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -22,6 +19,7 @@ import com.bhm.sdk.demo.entity.UpLoadEntity;
 import com.bhm.sdk.demo.http.HttpApi;
 import com.bhm.sdk.demo.tools.Entity;
 import com.bhm.sdk.demo.tools.Utils;
+import com.bhm.sdk.onresult.ActivityResult;
 import com.bhm.sdk.rxlibrary.demo.R;
 import com.bhm.sdk.rxlibrary.rxbus.RxBus;
 import com.bhm.sdk.rxlibrary.rxbus.Subscribe;
@@ -38,6 +36,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -132,7 +133,15 @@ public class MainActivity extends RxBaseActivity {
                 downLoad();
                 break;
             case 8:
-                startActivity(new Intent(this, RxBusActivity.class));
+//                startActivity(new Intent(this, RxBusActivity.class));
+                new ActivityResult(this).startForResult(new Intent(this, RxBusActivity.class)
+                        , new ActivityResult.Callback() {
+                            @Override
+                            public void onActivityResult(int i, Intent intent) {
+                                RxLoadingDialog.getDefaultDialog().showLoading(RxBuilder.
+                                        newBuilder(MainActivity.this).bindRx());
+                            }
+                        });
                 break;
             default:
                 return;

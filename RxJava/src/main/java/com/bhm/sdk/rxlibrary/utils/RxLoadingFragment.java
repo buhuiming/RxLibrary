@@ -16,11 +16,13 @@ import com.bhm.sdk.rxlibrary.rxjava.RxBuilder;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Field;
 import java.util.Objects;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 public class RxLoadingFragment extends DialogFragment {
 
@@ -35,12 +37,46 @@ public class RxLoadingFragment extends DialogFragment {
     public void show(@NotNull FragmentManager manager, String tag) {
         try {
             //在每个add事务前增加一个remove事务，防止连续的add
-            manager.beginTransaction().remove(this).commit();
-            super.show(manager, tag);
+            manager.beginTransaction().remove(this).commitAllowingStateLoss();
+            showAllowingLoss(manager, tag);
         } catch (Exception e) {
             //同一实例使用不同的tag会异常,这里捕获一下
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 解决 Can not perform this action after onSaveInstanceState问题
+     *
+     * @param manager FragmentManager
+     * @param tag     tag
+     */
+    public void showAllowingLoss(FragmentManager manager, String tag) {
+        try {
+            Class cls = DialogFragment.class;
+            Field mDismissed = cls.getDeclaredField("mDismissed");
+            mDismissed.setAccessible(true);
+            mDismissed.set(this, false);
+            Field mShownByMe = cls.getDeclaredField("mShownByMe");
+            mShownByMe.setAccessible(true);
+            mShownByMe.set(this, true);
+        } catch (Exception e) {
+            //调系统的show()方法
+            show(manager, tag);
+            return;
+        }
+        FragmentTransaction ft = manager.beginTransaction();
+        ft.add(this, tag);
+        ft.commitAllowingStateLoss();
+    }
+
+    @Override
+    public void dismiss() {
+        //防止横竖屏切换时 getFragmentManager置空引起的问题：
+        //Attempt to invoke virtual method 'android.app.FragmentTransaction
+        //android.app.FragmentManager.beginTransaction()' on a null object reference
+        if (getFragmentManager() == null) return;
+        super.dismissAllowingStateLoss();
     }
 
     @NotNull

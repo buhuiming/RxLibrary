@@ -22,6 +22,7 @@ public class DemoApplication extends Application{
                 .isLogOutPut(true)
                 .setReadTimeOut(30000)
                 .setConnectTimeOut(30000)
+                .setDelaysProcessLimitTime(2000)//请求成功/失败之后，再过2秒后去处理结果
                 .setOkHttpClient(null)
                 .build();
     }

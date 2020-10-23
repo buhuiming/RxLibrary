@@ -1,5 +1,6 @@
 package com.bhm.sdk.rxlibrary.rxjava;
 
+import android.annotation.SuppressLint;
 import android.widget.Toast;
 
 import com.bhm.sdk.rxlibrary.rxjava.callback.CallBack;
@@ -12,6 +13,7 @@ import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
 
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import io.reactivex.Observable;
@@ -35,6 +37,7 @@ public class RxBuilder {
     private Builder builder;
     private CallBack callBack;
     private RxStreamCallBackImp listener;
+    private long currentRequestDateTamp = 0;
 
     public RxBuilder(@NonNull Builder builder){
         this.builder = builder;
@@ -116,6 +119,10 @@ public class RxBuilder {
         return builder.defaultHeader;
     }
 
+    public long getDelaysProcessLimitTime(){
+        return builder.delaysProcessLimitTime;
+    }
+
     public <T> T createApi(Class<T> cla, String host){
         if(builder.isShowDialog && null != builder.dialog){
             builder.dialog.showLoading(this);
@@ -152,20 +159,37 @@ public class RxBuilder {
                         getConsumer());
     }
 
+    @SuppressLint("CheckResult")
     private <T> Consumer<T> getBaseConsumer(){
         return new Consumer<T>(){
             @Override
             public void accept(T t) throws Exception {
-                if(null != getCallBack()){
-                    getCallBack().onSuccess(t);
-                }
-                if(isShowDialog() && null != getDialog()){
-                    getDialog().dismissLoading(getActivity());
+                if(System.currentTimeMillis() - currentRequestDateTamp <= getDelaysProcessLimitTime()){
+                    Observable.timer(getDelaysProcessLimitTime(), TimeUnit.MILLISECONDS)
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Consumer<Long>() {
+                                @Override
+                                public void accept(Long aLong) throws Exception {
+                                    doBaseConsumer(t);
+                                }
+                            });
+                }else {
+                    doBaseConsumer(t);
                 }
             }
         };
     }
 
+    private <T> void doBaseConsumer(T t){
+        if (null != getCallBack()) {
+            getCallBack().onSuccess(t);
+        }
+        if (isShowDialog() && null != getDialog()) {
+            getDialog().dismissLoading(getActivity());
+        }
+    }
+
+    @SuppressLint("CheckResult")
     private Consumer<Throwable> getThrowableConsumer(){
         return new Consumer<Throwable>() {
             @Override
@@ -174,35 +198,50 @@ public class RxBuilder {
                     return;
                 }
                 RxUtils.Logger(RxBuilder.this, "ThrowableConsumer-> ", e.getMessage());//抛异常
-                if(null != getCallBack()){
-                    getCallBack().onFail(e);
-                }
-                if(isShowDialog() && null != getDialog()){
-                    getDialog().dismissLoading(getActivity());
-                }
-                if(isDefaultToast()) {
-                    if (e instanceof HttpException) {
-                        if (((HttpException) e).code() == 404) {
-                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                        } else if (((HttpException) e).code() == 504) {
-                            Toast.makeText(getActivity(), "请检查网络连接！", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getActivity(), "请检查网络连接！", Toast.LENGTH_SHORT).show();
-                        }
-                    } else if (e instanceof IndexOutOfBoundsException
-                            || e instanceof NullPointerException
-                            || e instanceof JsonSyntaxException
-                            || e instanceof IllegalStateException
-                            || e instanceof ResultException) {
-                        Toast.makeText(getActivity(), "数据异常，解析失败！", Toast.LENGTH_SHORT).show();
-                    } else if (e instanceof TimeoutException) {
-                        Toast.makeText(getActivity(), "连接超时，请重试！", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(getActivity(), "请求失败，请稍后再试！", Toast.LENGTH_SHORT).show();
-                    }
+                if(System.currentTimeMillis() - currentRequestDateTamp <= getDelaysProcessLimitTime()){
+                    Observable.timer(getDelaysProcessLimitTime(), TimeUnit.MILLISECONDS)
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Consumer<Long>() {
+                                @Override
+                                public void accept(Long aLong) throws Exception {
+                                    doThrowableConsumer(e);
+                                }
+                            });
+                }else{
+                    doThrowableConsumer(e);
                 }
             }
         };
+    }
+
+    private void doThrowableConsumer(Throwable e){
+        if(null != getCallBack()){
+            getCallBack().onFail(e);
+        }
+        if(isShowDialog() && null != getDialog()){
+            getDialog().dismissLoading(getActivity());
+        }
+        if(isDefaultToast()) {
+            if (e instanceof HttpException) {
+                if (((HttpException) e).code() == 404) {
+                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                } else if (((HttpException) e).code() == 504) {
+                    Toast.makeText(getActivity(), "请检查网络连接！", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "请检查网络连接！", Toast.LENGTH_SHORT).show();
+                }
+            } else if (e instanceof IndexOutOfBoundsException
+                    || e instanceof NullPointerException
+                    || e instanceof JsonSyntaxException
+                    || e instanceof IllegalStateException
+                    || e instanceof ResultException) {
+                Toast.makeText(getActivity(), "数据异常，解析失败！", Toast.LENGTH_SHORT).show();
+            } else if (e instanceof TimeoutException) {
+                Toast.makeText(getActivity(), "连接超时，请重试！", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getActivity(), "请求失败，请稍后再试！", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     /** 最终结果的处理
@@ -215,9 +254,6 @@ public class RxBuilder {
                 if(null != getCallBack()){
                     getCallBack().onComplete();
                 }
-                if(isShowDialog() && null != getDialog()){
-                    getDialog().dismissLoading(getActivity());
-                }
             }
         };
     }
@@ -229,6 +265,7 @@ public class RxBuilder {
         return new Consumer<Disposable>() {
             @Override
             public void accept(Disposable disposable) throws Exception {
+                currentRequestDateTamp = System.currentTimeMillis();
                 //做准备工作
                 if(null != getCallBack()){
                     getCallBack().onStart(disposable);
@@ -294,6 +331,7 @@ public class RxBuilder {
         private String loadingTitle = RxConfig.getLoadingTitle();
         private boolean dialogDismissInterruptRequest = RxConfig.isDialogDismissInterruptRequest();
         private HashMap<String, String> defaultHeader = RxConfig.getDefaultHeader();
+        private long delaysProcessLimitTime = RxConfig.getDelaysProcessLimitTime();
 
         public Builder(RxAppCompatActivity activity) {
             this.activity = activity;
@@ -358,7 +396,12 @@ public class RxBuilder {
             appendWrite = mAppendWrite;
             writtenLength = mWrittenLength;
             return this;
-    }
+        }
+
+        public Builder setDelaysProcessLimitTime(long delaysProcessLimitTime1){
+            delaysProcessLimitTime = delaysProcessLimitTime1;
+            return this;
+        }
 
         public RxBuilder bindRx(){
             return new RxBuilder(this);

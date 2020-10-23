@@ -27,6 +27,7 @@ public class RxConfig {
     private static String loadingTitle = "正在请求...";
     private static boolean dialogDismissInterruptRequest = true;
     private static HashMap<String, String> defaultHeader = new HashMap<>();
+    private static long delaysProcessLimitTime;//请求有结果之后，延迟处理时间 单位毫秒
 
     public RxConfig(Builder builder){
         dialog = builder.dialog;
@@ -44,6 +45,7 @@ public class RxConfig {
         loadingTitle = builder.loadingTitle;
         dialogDismissInterruptRequest = builder.dialogDismissInterruptRequest;
         defaultHeader = builder.defaultHeader;
+        delaysProcessLimitTime = builder.delaysProcessLimitTime;
     }
 
     public static RxConfig.Builder newBuilder() {
@@ -66,6 +68,7 @@ public class RxConfig {
         private boolean isAppendWrite;
         private String loadingTitle;
         private HashMap<String, String> defaultHeader;
+        private long delaysProcessLimitTime;
 
         public Builder setRxLoadingDialog(RxLoadingDialog setDialog){
             dialog = setDialog;
@@ -124,6 +127,11 @@ public class RxConfig {
             fileName = mFileName;
             writtenLength = mWrittenLength;
             isAppendWrite = mIsAppendWrite;
+            return this;
+        }
+
+        public Builder setDelaysProcessLimitTime(long delaysProcessLimitTime1){
+            delaysProcessLimitTime = delaysProcessLimitTime1;
             return this;
         }
 
@@ -190,5 +198,9 @@ public class RxConfig {
 
     public static HashMap<String, String> getDefaultHeader(){
         return defaultHeader;
+    }
+
+    public static long getDelaysProcessLimitTime(){
+        return delaysProcessLimitTime;
     }
 }

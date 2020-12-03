@@ -14,6 +14,7 @@ public class RxLoadingDialog {
 
     private RxLoadingFragment rxLoadingFragment;
     private static RxLoadingDialog RxDialog;
+    private boolean showAgain = false;
 
     public static RxLoadingDialog getDefaultDialog(){
         if(null == RxDialog){
@@ -30,6 +31,10 @@ public class RxLoadingDialog {
         if (builder.getActivity() != null && !builder.getActivity().isFinishing() && builder.isShowDialog()) {
             if (rxLoadingFragment == null) {
                 rxLoadingFragment = initDialog(builder);
+                showAgain = false;
+            }else{
+                rxLoadingFragment.changDialogContent(builder);
+                showAgain = true;
             }
             FragmentManager fm = builder.getActivity().getSupportFragmentManager();
             if (!rxLoadingFragment.isAdded() && null == fm.findFragmentByTag("default")) {
@@ -44,17 +49,19 @@ public class RxLoadingDialog {
 
     public void dismissLoading(Activity activity){
         if(null != activity && !activity.isFinishing()
-                && null != rxLoadingFragment) {
+                && null != rxLoadingFragment && !showAgain) {
             rxLoadingFragment.dismiss();
             rxLoadingFragment = null;
         }
+        showAgain = false;
     }
 
     public void cancelLoading(Activity activity){
         if(null != activity && null != rxLoadingFragment && null != rxLoadingFragment.getDialog()
-                && activity.equals(rxLoadingFragment.getDialog().getOwnerActivity())) {
+                && activity.equals(rxLoadingFragment.getDialog().getOwnerActivity()) && !showAgain) {
             rxLoadingFragment.dismiss();
             rxLoadingFragment = null;
         }
+        showAgain = false;
     }
 }

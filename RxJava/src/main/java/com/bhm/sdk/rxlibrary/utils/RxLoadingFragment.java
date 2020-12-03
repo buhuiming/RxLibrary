@@ -28,6 +28,7 @@ public class RxLoadingFragment extends DialogFragment {
 
     private RxBuilder builder;
     private static long onBackPressed = 0L;
+    private TextView textView;
 
     public RxLoadingFragment(RxBuilder builder){
         this.builder = builder;
@@ -124,10 +125,19 @@ public class RxLoadingFragment extends DialogFragment {
         dialog.setContentView(v, new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));// 设置布局
+        textView = v.findViewById(R.id.dialog_text_loading);
         if(!TextUtils.isEmpty(builder.getLoadingTitle())){
-            TextView textView = v.findViewById(R.id.dialog_text_loading);
             textView.setText(builder.getLoadingTitle());
         }
         return dialog;
+    }
+
+    /** 改变Dialog的显示内容
+     * @param rxBuilder
+     */
+    public void changDialogContent(RxBuilder rxBuilder){
+        if(textView != null && !TextUtils.isEmpty(rxBuilder.getLoadingTitle())){
+            textView.setText(rxBuilder.getLoadingTitle());
+        }
     }
 }

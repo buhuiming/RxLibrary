@@ -48,18 +48,15 @@ public class RxLoadingDialog {
     }
 
     public void dismissLoading(Activity activity){
-        if(null != activity && !activity.isFinishing()
-                && null != rxLoadingFragment && !showAgain) {
-            rxLoadingFragment.dismiss();
-            rxLoadingFragment = null;
-        }
-        showAgain = false;
+        cancelLoading(activity);
     }
 
     public void cancelLoading(Activity activity){
-        if(null != activity && null != rxLoadingFragment && null != rxLoadingFragment.getDialog()
-                && activity.equals(rxLoadingFragment.getDialog().getOwnerActivity()) && !showAgain) {
-            rxLoadingFragment.dismiss();
+        if(null != rxLoadingFragment && !showAgain){
+            if(null != activity && !activity.isFinishing() && null != rxLoadingFragment.getDialog()
+                    && activity.equals(rxLoadingFragment.getDialog().getOwnerActivity())){
+                rxLoadingFragment.dismiss();
+            }
             rxLoadingFragment = null;
         }
         showAgain = false;

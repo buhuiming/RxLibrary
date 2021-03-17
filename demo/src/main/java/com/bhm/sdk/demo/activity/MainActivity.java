@@ -138,8 +138,9 @@ public class MainActivity extends RxBaseActivity {
                         , new ActivityResult.Callback() {
                             @Override
                             public void onActivityResult(int i, Intent intent) {
-                                RxLoadingDialog.getDefaultDialog().showLoading(RxBuilder.
-                                        newBuilder(MainActivity.this).bindRx());
+//                                RxLoadingDialog.getDefaultDialog().showLoading(RxBuilder.
+//                                        newBuilder(MainActivity.this).bindRx());
+                                doGet();
                             }
                         });
                 break;
@@ -159,6 +160,7 @@ public class MainActivity extends RxBaseActivity {
         if(null != entity){
             Toast.makeText(this, "RxBus改变了MainActivity的标题", Toast.LENGTH_SHORT).show();
             titleBar.setTitleText(entity.getMsg());
+            doGet();
         }
     }
 
@@ -209,6 +211,7 @@ public class MainActivity extends RxBaseActivity {
 
         /*默认使用Application的配置*/
         RxBuilder builder = RxBuilder.newBuilder(this)
+                .setLoadingDialog(RxLoadingDialog.getDefaultDialog())
                 .setRxManager(rxManager)
                 .bindRx();
 
@@ -220,6 +223,27 @@ public class MainActivity extends RxBaseActivity {
             public void onSuccess(DoGetEntity response) {
                 Log.i("MainActivity--> ", response.getDate());
                 Toast.makeText(MainActivity.this, response.getDate(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFail(Throwable e) {
+                super.onFail(e);
+                RxBuilder builder1 = RxBuilder.newBuilder(MainActivity.this)
+                        .setLoadingDialog(RxLoadingDialog.getDefaultDialog())
+                        .setLoadingTitle("dsadasd")
+                        .setRxManager(rxManager)
+                        .bindRx();
+
+                Observable<DoGetEntity> observable1 = builder1
+                        .createApi(HttpApi.class, "http://news-at.zhihu.com")
+                        .getData("Bearer aedfc1246d0b4c3f046be2d50b34d6ff", "1");
+                builder1.setCallBack(observable1, new CallBack<DoGetEntity>() {
+                    @Override
+                    public void onSuccess(DoGetEntity response) {
+                        Log.i("MainActivity--> ", response.getDate());
+                        Toast.makeText(MainActivity.this, response.getDate(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }

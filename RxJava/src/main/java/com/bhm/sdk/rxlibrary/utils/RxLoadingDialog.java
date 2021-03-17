@@ -31,14 +31,14 @@ public class RxLoadingDialog {
         if (builder.getActivity() != null && !builder.getActivity().isFinishing() && builder.isShowDialog()) {
             if (rxLoadingFragment == null) {
                 rxLoadingFragment = initDialog(builder);
-                showAgain = false;
-            }else{
-                rxLoadingFragment.changDialogContent(builder);
-                showAgain = true;
             }
             FragmentManager fm = builder.getActivity().getSupportFragmentManager();
             if (!rxLoadingFragment.isAdded() && null == fm.findFragmentByTag("default")) {
                 rxLoadingFragment.show(fm, "default");
+                showAgain = false;
+            }else{
+                rxLoadingFragment.changDialogContent(builder);
+                showAgain = true;
             }
         }
     }
@@ -53,11 +53,11 @@ public class RxLoadingDialog {
 
     public void cancelLoading(Activity activity){
         if(null != rxLoadingFragment && !showAgain){
-            if(null != activity && !activity.isFinishing() && null != rxLoadingFragment.getDialog()
-                    && activity.equals(rxLoadingFragment.getDialog().getOwnerActivity())){
+            if(null != activity && null != rxLoadingFragment.getDialog() && activity
+                    .equals(rxLoadingFragment.getActivity())){
                 rxLoadingFragment.dismiss();
+                rxLoadingFragment = null;
             }
-            rxLoadingFragment = null;
         }
         showAgain = false;
     }

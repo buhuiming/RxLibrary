@@ -27,8 +27,18 @@ public class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> 
             //这种情况是请求成功，但是json不是合理的
             throw new ResultException(200, "json is illegal", response);
         }else if (httpResult.getCode() == 200 || httpResult.getRet() == 200){
-            //200的时候就直接解析，不可能出现解析异常。因为我们实体基类中传入的泛型，就是数据成功时候的格式
-            return gson.fromJson(response, type);
+            //200的时候就直接解析
+            try{
+                return gson.fromJson(response, type);
+            }catch (Exception e) {
+                if(httpResult.getData().toString().equals("[]")){
+                    //这种情况是一个空数组，但是声明的却不是一个数组
+                    httpResult.setData(null);
+                    return gson.fromJson(gson.toJson(httpResult), type);
+                }else {
+                    throw new ResultException(httpResult.getCode(), httpResult.getMsg(), response);
+                }
+            }
         }else if(httpResult.getCode() == 0 && httpResult.getRet() == 0){
             try{
                 //这个情况就是没有code、ret的一个json，直接给它按预定的实体解析，抛出后再抛一个自定义ResultException

@@ -6,6 +6,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.bhm.sdk.rxlibrary.rxjava.callback.LongDefaultAdapter;
 import com.bhm.sdk.rxlibrary.utils.RxUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -302,6 +303,8 @@ public class RetrofitCreateHelper {
 //                .setDateFormat("yyyy-MM-dd HH:mm:ss")
                 .registerTypeAdapter(Integer.class, new IntegerDefaultAdapter())
                 .registerTypeAdapter(int.class, new IntegerDefaultAdapter())
+                .registerTypeAdapter(Long.class, new LongDefaultAdapter())
+                .registerTypeAdapter(long.class, new LongDefaultAdapter())
                 .create();
     }
 

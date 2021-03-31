@@ -39,8 +39,3 @@ dependencies {
     api 'com.jakewharton.rxbinding3:rxbinding:3.1.0'
     api 'com.trello.rxlifecycle3:rxlifecycle-components:3.1.0'
 }
-ext {
-    PUBLISH_GROUP_ID = 'com.bhm.sdk.rxlibrary'
-    PUBLISH_ARTIFACT_ID = 'RxLibrary'
-    PUBLISH_VERSION = '2.8.4'
-}

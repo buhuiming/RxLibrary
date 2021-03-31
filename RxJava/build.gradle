@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion 29
@@ -45,4 +44,3 @@ ext {
     PUBLISH_ARTIFACT_ID = 'RxLibrary'
     PUBLISH_VERSION = '2.8.4'
 }
-apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'

@@ -13,21 +13,9 @@ RxLibrary工程：<br>1.rxjava2 + retrofit2的封装，常用的请求（Get,Pos
 
 集成
 -------
-    maven { url "https://dl.bintray.com/bikie/bhm-sdk" } //根目录下build.gradle的allprojects-repositories节点下添加
+    maven { url "https://jitpack.io" } //根目录下build.gradle的allprojects-repositories节点下添加
 
-    compile 'com.bhm.sdk.rxlibrary:RxLibrary:latest.version'
-<br>或者
-
-    <dependency>
-      <groupId>com.bhm.sdk.rxlibrary</groupId>
-      <artifactId>RxLibrary</artifactId>
-      <version>latest.version</version>
-      <type>pom</type>
-    </dependency>
-  
-  
-最新版本：[ ![Download](https://api.bintray.com/packages/bikie/bhm-sdk/RxLibrary/images/download.svg) ](https://bintray.com/bikie/bhm-sdk/RxLibrary/_latestVersion)
-
+    compile 'com.github.buhuiming:RxLibrary:2.8.4'
 
 
 一、rxjava2 + retrofit2的使用

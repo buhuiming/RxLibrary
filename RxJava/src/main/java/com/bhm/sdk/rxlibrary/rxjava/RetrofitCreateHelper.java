@@ -117,8 +117,8 @@ public class RetrofitCreateHelper {
                 //把retrofit的工作放到Observable的工作流里
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 //GsonConverterFactory是告诉retrofit我们怎么去解析数据，有可能是xml，有可能是json。
-               .addConverterFactory(GsonConverterFactory.create(getGsonBuilder()))
-//                 .addConverterFactory(ResponseConverterFactory.create(getGsonBuilder()))
+//                .addConverterFactory(GsonConverterFactory.create(getGsonBuilder()))
+                .addConverterFactory(ResponseConverterFactory.create(getGsonBuilder()))
                 .build();
         return retrofit.create(clazz);
     }
@@ -301,11 +301,10 @@ public class RetrofitCreateHelper {
     private Gson getGsonBuilder(){
         return new GsonBuilder()
 //                .setDateFormat("yyyy-MM-dd HH:mm:ss")
-//调试代码
-//                .registerTypeAdapter(Integer.class, new IntegerDefaultAdapter())
-//                .registerTypeAdapter(int.class, new IntegerDefaultAdapter())
-//                .registerTypeAdapter(Long.class, new LongDefaultAdapter())
-//                .registerTypeAdapter(long.class, new LongDefaultAdapter())
+               .registerTypeAdapter(Integer.class, new IntegerDefaultAdapter())
+               .registerTypeAdapter(int.class, new IntegerDefaultAdapter())
+               .registerTypeAdapter(Long.class, new LongDefaultAdapter())
+               .registerTypeAdapter(long.class, new LongDefaultAdapter())
                 .create();
     }
 

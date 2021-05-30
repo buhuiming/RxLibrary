@@ -79,7 +79,6 @@ public class DownLoadResponseBody extends ResponseBody {
                                 });
                     }
                     totalBytesRead += bytesRead != -1 ? bytesRead : 0;
-                    totalBytesRead + = 10;
                     if (bytesRead != -1) {
                         final int progress = (int) (totalBytesRead * 100 / totalBytes);
                         Observable.just(bytesRead)
@@ -97,9 +96,9 @@ public class DownLoadResponseBody extends ResponseBody {
                                     .subscribe(new Consumer<Long>() {
                                         @Override
                                         public void accept(Long aLong) throws Exception {
-//                                             rxBuilder.getListener().onProgress(100, bytesRead, totalBytes);
-//                                             rxBuilder.getListener().onFinish();
-//                                             RxUtils.Logger(rxBuilder, "DownLoad-- > ", "finish downLoad");
+                                            rxBuilder.getListener().onProgress(100, bytesRead, totalBytes);
+                                            rxBuilder.getListener().onFinish();
+                                            RxUtils.Logger(rxBuilder, "DownLoad-- > ", "finish downLoad");
                                             if(null != rxBuilder.getDialog() && rxBuilder.isShowDialog()) {
                                                 rxBuilder.getDialog().dismissLoading(rxBuilder.getActivity());
                                             }

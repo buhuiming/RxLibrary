@@ -301,10 +301,11 @@ public class RetrofitCreateHelper {
     private Gson getGsonBuilder(){
         return new GsonBuilder()
 //                .setDateFormat("yyyy-MM-dd HH:mm:ss")
-                .registerTypeAdapter(Integer.class, new IntegerDefaultAdapter())
-                .registerTypeAdapter(int.class, new IntegerDefaultAdapter())
-                .registerTypeAdapter(Long.class, new LongDefaultAdapter())
-                .registerTypeAdapter(long.class, new LongDefaultAdapter())
+//调试代码
+//                .registerTypeAdapter(Integer.class, new IntegerDefaultAdapter())
+//                .registerTypeAdapter(int.class, new IntegerDefaultAdapter())
+//                .registerTypeAdapter(Long.class, new LongDefaultAdapter())
+//                .registerTypeAdapter(long.class, new LongDefaultAdapter())
                 .create();
     }
 

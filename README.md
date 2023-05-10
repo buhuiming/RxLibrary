@@ -1,3 +1,6 @@
+
+## 不再维护！不再维护！不再维护！移步kotlin版本： [RxJava3版本](https://github.com/buhuiming/NetCore)、[flow版本](https://github.com/buhuiming/NetCore-Flow)
+
 [![API](https://img.shields.io/badge/API-15%2B-brightgreen.svg)](https://android-arsenal.com/api?level=15) [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)[ ![Download](https://api.bintray.com/packages/bikie/bhm-sdk/RxLibrary/images/download.svg) ](https://bintray.com/bikie/bhm-sdk/RxLibrary/_latestVersion)
 -----
 
